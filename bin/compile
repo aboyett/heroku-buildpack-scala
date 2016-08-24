@@ -160,8 +160,11 @@ if [ -n "$SBT_MAVEN_PROXY" -o -n "$SBT_IVY_PROXY" ] ; then
     echo "maven-proxy: $SBT_MAVEN_PROXY" >> $SBT_REPOS_FILE
   fi
 
-  # TODO: add ivy proxy configuration
-  # SEE: http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html
+  # reference: http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html
+  if [ -n "$SBT_IVY_PROXY" ] ; then
+    status "Injecting ivy proxy repo into sbt configuration"
+    echo "ivy-proxy: $SBT_IVY_PROXY, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]" >> $SBT_REPOS_FILE
+  fi
 fi
 
 # download and cache the dependencies if this is the first build
