@@ -148,6 +148,22 @@ cp -p $OPT_DIR/$HEROKU_PLUGIN $SBT_USER_HOME/plugins/$HEROKU_PLUGIN
 # Manually pre-clean because sbt-native-packager doesn't clobber this dir
 rm -rf $BUILD_DIR/target/universal/stage
 
+# inject proxy repositories if requests
+if [ -n "$SBT_MAVEN_PROXY" -o -n "$SBT_IVY_PROXY" ] ; then
+  SBT_EXTRAS_OPTS="$SBT_EXTRAS_OPTS -Dsbt.override.build.repos=true"
+  SBT_REPOS_FILE="$SBT_USER_HOME/repositories"
+
+  echo "[repositories]" > $SBT_REPOS_FILE
+
+  if [ -n "$SBT_MAVEN_PROXY" ] ; then
+    status "Injecting maven proxy repo into sbt configuration"
+    echo "maven-proxy: $SBT_MAVEN_PROXY" >> $SBT_REPOS_FILE
+  fi
+
+  # TODO: add ivy proxy configuration
+  # SEE: http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html
+fi
+
 # download and cache the dependencies if this is the first build
 if [ ! -d "$SBT_USER_HOME/.ivy2" ]; then
   if is_sbt_native_packager $BUILD_DIR || is_play $BUILD_DIR; then
