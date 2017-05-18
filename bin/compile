@@ -150,7 +150,7 @@ rm -rf $BUILD_DIR/target/universal/stage
 
 # inject proxy repositories if requests
 if [ -n "$SBT_MAVEN_PROXY" -o -n "$SBT_IVY_PROXY" ] ; then
-  SBT_EXTRAS_OPTS="$SBT_EXTRAS_OPTS -Dsbt.override.build.repos=true"
+  export SBT_EXTRAS_OPTS="$SBT_EXTRAS_OPTS -Dsbt.override.build.repos=true"
   SBT_REPOS_FILE="$SBT_USER_HOME/repositories"
 
   echo "[repositories]" > $SBT_REPOS_FILE
