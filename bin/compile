@@ -217,6 +217,9 @@ export SBT_HOME="\$HOME/$SBT_USER_HOME"
 export PATH="\$SBT_HOME/bin:\$PATH"
 EOF
 
+# configure container memory limit detection
+cp $LIB_DIR/memory-limits.sh $BUILD_DIR/.profile.d/00-container-memory-limits.sh
+
 # Move compiled app back to where Heroku expects it
 if is_app_dir "$APP_BUILD_DIR"; then
   mv $BUILD_DIR $APP_BUILD_DIR
